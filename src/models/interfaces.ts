@@ -4,7 +4,7 @@ export interface EmisionResponse{
 }
 
 export interface EmisionI{
-    id:string;
+    id?:string;
     title:string;
     cover:string;
     category:string;
@@ -14,7 +14,7 @@ export interface EmisionI{
 export interface LastestAnimeI {
     title: string
     cover: string
-    id: string
+    id?: string
     episode: string
     type: string
 }
@@ -29,11 +29,11 @@ export interface AnimeI{
     date?: string;
     genders?: Array<GenderI>;
     sugestions?: Array<SuggestionI>;
-    episodes?: Array<EpisodeI>;
+    episodes?: Array<EpI>;
 }
 
 export interface GenderI{
-    id:string;
+    id?:string;
     title:string;
 }
 
@@ -43,15 +43,35 @@ export interface SuggestionI{
     cover?:string;
     year?:number;
 }
-export interface EpisodeI{
+export interface EpI{
     id?:string;
     number?:string;
 }
 
 export interface AnimeSearchI {
-    id: string;
+    id?: string;
     title: string;
     cover: string
     category: string;
     year: number;
 }
+
+
+export interface EpisodeI {
+    id?: string;
+    title: string;
+    number: string
+    videos: Array<VideosI>;
+    downloads: Array<DownloadsI>;
+}
+
+export interface VideosI {
+    url: string;
+    title: string;
+}
+export interface DownloadsI {
+    url: string;
+    server: string;
+}
+
+

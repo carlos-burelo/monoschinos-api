@@ -1,7 +1,7 @@
 import cheerio from 'cheerio';
 import axios from 'axios';
 import { urls } from '../config';
-import { LastestAnimeI, AnimeI, SuggestionI, GenderI, AnimeSearchI } from "../models/interfaces";
+import { LastestAnimeI, AnimeI, SuggestionI, GenderI, AnimeSearchI, VideosI } from "../models/interfaces";
 
 
 async function getLastest(req: any, res: any) {
@@ -51,7 +51,6 @@ async function getLastest(req: any, res: any) {
             })
     }
 }
-
 async function getEmision(req: any, res: any) {
     try {
         let { page } = req.query;
@@ -100,7 +99,6 @@ async function getEmision(req: any, res: any) {
         })
     }
 }
-
 async function getAnime(req:any, res:any) {
     try {
         let {id} = req.params;
@@ -202,7 +200,6 @@ async function getAnime(req:any, res:any) {
         });
     };
 };
-
 async function searchAnime(req:any, res:any) {
     try {
         let { id } = req.params;
@@ -239,6 +236,92 @@ async function searchAnime(req:any, res:any) {
             success: false
         })
     }
+};
+async function getEpisode(req:any, res:any) {
+    try {
+        let { id } = req.params;
+        const response = await axios.get(`${urls.episode}/${id}`);
+        const $ = cheerio.load(response.data);
+        let epnum = $('.Episode .Title-epi').text();
+        let title = $('.Episode .Title-epi').text().replace('Sub Español', '')
+        let animeId = id.split('-');
+        if (animeId.includes('episodio')) {
+            animeId = animeId.splice(0, animeId.length - 2).join('-');
+        } else {
+            animeId = animeId.splice(0, animeId.length - 1)
+        }
+        animeId = `${animeId}-sub-espanol`;
+        let number:any = epnum.split(' ');
+        number = parseInt(number[number.length - 3]);
+
+        let videos = [];
+        let videosContainer = $('.Episode .content .row .TPlayer').text();
+        $(videosContainer).each((i, e) => {
+            let el = $(e);
+            let url = el.attr('src');
+            if (url) {
+                url = url.split('url=')[1]
+                url = decodeURIComponent(url)
+                url = url.split('&id')[0]
+                let videolinks = new URL(url)
+                let { host } = videolinks;
+                let name = host
+                    .replace('.com', '')
+                    .replace('www.', '')
+                    .replace('.ru', '')
+                    .replace('repro.', '')
+                    .replace('.co', '')
+                    .replace('.nz', '')
+               name = `${name.slice(0,1).toUpperCase()}${name.slice(1)}`
+                let servers = {
+                    url,
+                    name
+                }
+                videos.push(servers);
+            };
+        });
+        let downloads = [];
+        let downloadsContainer = $('#downloads table tbody tr');
+
+        $(downloadsContainer).each((i, e) => {
+            let el = $(e);
+
+            let link = el.find('a').attr('href')
+            let sn = link.replace('.com', '')
+            .replace('www.', '')
+            .replace('.ru', '')
+            .replace('repro.', '')
+            .replace('.co', '')
+            .replace('.nz', '')
+            let servername = sn.slice(8)
+            let svn = servername.indexOf("/")
+            let server = servername.slice(0, svn)
+            server = `${server.slice(0,1).toUpperCase()}${server.slice(1)}`
+            let down = {
+                server,
+                link
+            }
+            if (down) {
+                downloads.push(down)
+            }
+
+        })
+
+        res.json({
+            title,
+            animeId,
+            number,
+            videos,
+            downloads,
+        })
+
+    } catch (err) {
+        res.status(500)
+            .json({
+                message: err.message,
+                success: false
+            })
+    }
 }
 
 export {
@@ -246,4 +329,5 @@ export {
     getEmision,
     getAnime,
     searchAnime,
+    getEpisode,
 }

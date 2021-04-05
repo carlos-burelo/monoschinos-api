@@ -47,3 +47,11 @@ export interface EpisodeI{
     id?:string;
     number?:string;
 }
+
+export interface AnimeSearchI {
+    id: string;
+    title: string;
+    cover: string
+    category: string;
+    year: number;
+}

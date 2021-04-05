@@ -1,7 +1,7 @@
 import cheerio from 'cheerio';
 import axios from 'axios';
 import { urls } from '../config';
-import { LastestAnimeI, AnimeI, SuggestionI, GenderI } from "../models/interfaces";
+import { LastestAnimeI, AnimeI, SuggestionI, GenderI, AnimeSearchI } from "../models/interfaces";
 
 
 async function getLastest(req: any, res: any) {
@@ -202,8 +202,48 @@ async function getAnime(req:any, res:any) {
         });
     };
 };
+
+async function searchAnime(req:any, res:any) {
+    try {
+        let { id } = req.params;
+        const response = await axios.get(`${urls.search}${id}`);
+        const $ = cheerio.load(response.data);
+        let animes = [];
+        $('.animes .row article').each((i, e) => {
+            let el = $(e);
+            let title = el.find('h3.Title').text()
+            let cover = el.find('div.Image .cover .img-fluid').attr('src')
+            let id1 = el.find('a.link-anime').attr('href');
+            let id = id1.split('/')[4];
+            let category = el.find('.category').text();
+            category = category.substring(1, category.length)
+            let year = parseInt(el.find('.fecha').text());
+
+            let anime: AnimeSearchI = {
+                id,
+                title,
+                cover,
+                category,
+                year
+            }
+            animes.push(anime);
+        })
+
+        res.json(
+            animes,
+        )
+
+    } catch (err) {
+        res.json({
+            message: err.message,
+            success: false
+        })
+    }
+}
+
 export {
     getLastest,
     getEmision,
     getAnime,
+    searchAnime,
 }

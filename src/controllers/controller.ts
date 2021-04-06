@@ -322,7 +322,38 @@ async function getEpisode(req: any, res: any) {
                 success: false
             })
     }
-}
+};
+async function getCategories(req, res) {
+    try {
+        const response = await axios.get(`${urls.main}/animes`);
+        const $ = cheerio.load(response.data);
+        let categories = []
+        let categoriesContainer = $('.filter-container .clearfix .float-left')[0];
+        $(categoriesContainer).find('.dropdown-menu .dropdown-item')
+            .each((i, e) => {
+                let el = $(e)
+                let title = el.text();
+                let id = el.attr('href');
+                id = id.split('/')[2];
+                let category = {
+                    title,
+                    id
+                }
+                categories.push(category)
+            })
+
+        res.status(200)
+            .json(
+                categories,
+                )
+    } catch (err) {
+        res.status(500)
+            .json({
+                message: err.message,
+                success: false
+            })
+    }
+};
 async function getGenders(req, res) {
     try {
         const response = await axios.get(`${urls.main}/animes`);
@@ -358,7 +389,43 @@ async function getGenders(req, res) {
                 success: false
             })
     }
-}
+};
+async function getYears(req, res) {
+    try {
+        const response = await axios.get(`${urls.main}/animes`);
+        const $ = cheerio.load(response.data);
+
+        let years = []
+
+        let YearsContainer = $('.filter-container .clearfix .float-left')[2];
+
+        $(YearsContainer).find('.dropdown-menu .dropdown-item').each((i, e) => {
+            let el = $(e)
+
+            let title = el.text();
+            if (title.charAt(0) == ' ') {
+                title = title.substring(1, title.length)
+            }
+            let id = el.attr('href');
+            id = id.split('/')[2];
+            let year: GenderI = {
+                title,
+                id
+            }
+            years.push(year)
+        })
+        res.json(
+            years,
+        )
+
+    } catch (err) {
+        res.status(500)
+            .json({
+                message: err,
+                success: false
+            })
+    }
+};
 
 
 export {
@@ -367,5 +434,7 @@ export {
     getAnime,
     searchAnime,
     getEpisode,
+    getCategories,
     getGenders,
+    getYears,
 }

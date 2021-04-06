@@ -27,7 +27,7 @@ async function getLastest(req: any, res: any) {
             id.splice(id.length - 2, 2);
             id = `${id.join('-')}-episodio-${episode}`;
 
-            let anime:LastestAnimeI = {
+            let anime: LastestAnimeI = {
                 id,
                 title,
                 cover,
@@ -99,12 +99,12 @@ async function getEmision(req: any, res: any) {
         })
     }
 }
-async function getAnime(req:any, res:any) {
+async function getAnime(req: any, res: any) {
     try {
-        let {id} = req.params;
+        let { id } = req.params;
         const response = await axios.get(`${urls.anime}/${id}`);
         const $ = cheerio.load(response.data);
-        let anime:AnimeI = {};
+        let anime: AnimeI = {};
         let genders = []
         let episodes = []
         let sugestions = []
@@ -125,8 +125,8 @@ async function getAnime(req:any, res:any) {
                 episodes[i] = episode;
                 anime.episodes = episodes
                 totalEpisodes--
-                
-                
+
+
             });
         });
         // Genders
@@ -149,7 +149,7 @@ async function getAnime(req:any, res:any) {
             let cover = el.find('a .Image img').attr('src');
             let year = parseInt(el.find('.fecha').text());
 
-            let sugestionAnime:SuggestionI  = {
+            let sugestionAnime: SuggestionI = {
                 id,
                 title,
                 cover,
@@ -173,7 +173,7 @@ async function getAnime(req:any, res:any) {
             let type1 = date1.replace(/ /gi, "").replace(/\n/gi, "").replace(/Finalizado/gi, '').replace(/Estreno/gi, '').replace(`${date}`, '')
             let type = type1.slice(1, type1.length)
             let cover = el.find('.Image img').attr('src');
-             anime = {
+            anime = {
                 id,
                 type,
                 title,
@@ -200,7 +200,7 @@ async function getAnime(req:any, res:any) {
         });
     };
 };
-async function searchAnime(req:any, res:any) {
+async function searchAnime(req: any, res: any) {
     try {
         let { id } = req.params;
         const response = await axios.get(`${urls.search}${id}`);
@@ -237,7 +237,7 @@ async function searchAnime(req:any, res:any) {
         })
     }
 };
-async function getEpisode(req:any, res:any) {
+async function getEpisode(req: any, res: any) {
     try {
         let { id } = req.params;
         const response = await axios.get(`${urls.episode}/${id}`);
@@ -251,7 +251,7 @@ async function getEpisode(req:any, res:any) {
             animeId = animeId.splice(0, animeId.length - 1)
         }
         animeId = `${animeId}-sub-espanol`;
-        let number:any = epnum.split(' ');
+        let number: any = epnum.split(' ');
         number = parseInt(number[number.length - 3]);
 
         let videos = [];
@@ -272,7 +272,7 @@ async function getEpisode(req:any, res:any) {
                     .replace('repro.', '')
                     .replace('.co', '')
                     .replace('.nz', '')
-               name = `${name.slice(0,1).toUpperCase()}${name.slice(1)}`
+                name = `${name.slice(0, 1).toUpperCase()}${name.slice(1)}`
                 let servers = {
                     url,
                     name
@@ -288,15 +288,15 @@ async function getEpisode(req:any, res:any) {
 
             let link = el.find('a').attr('href')
             let sn = link.replace('.com', '')
-            .replace('www.', '')
-            .replace('.ru', '')
-            .replace('repro.', '')
-            .replace('.co', '')
-            .replace('.nz', '')
+                .replace('www.', '')
+                .replace('.ru', '')
+                .replace('repro.', '')
+                .replace('.co', '')
+                .replace('.nz', '')
             let servername = sn.slice(8)
             let svn = servername.indexOf("/")
             let server = servername.slice(0, svn)
-            server = `${server.slice(0,1).toUpperCase()}${server.slice(1)}`
+            server = `${server.slice(0, 1).toUpperCase()}${server.slice(1)}`
             let down = {
                 server,
                 link
@@ -323,6 +323,43 @@ async function getEpisode(req:any, res:any) {
             })
     }
 }
+async function getGenders(req, res) {
+    try {
+        const response = await axios.get(`${urls.main}/animes`);
+        const $ = cheerio.load(response.data);
+
+        let genders = []
+
+        let gendersContainer = $('.filter-container .clearfix .float-left')[1];
+
+        $(gendersContainer).find('.dropdown-menu .dropdown-item').each((i, e) => {
+            let el = $(e)
+
+            let title = el.text();
+            if (title.charAt(0) == ' ') {
+                title = title.substring(1, title.length)
+            }
+            let id = el.attr('href');
+            id = id.split('/')[2];
+            let gender: GenderI = {
+                title,
+                id
+            }
+            genders.push(gender)
+        })
+        res.json(
+            genders,
+        )
+
+    } catch (err) {
+        res.status(500)
+            .json({
+                message: err,
+                success: false
+            })
+    }
+}
+
 
 export {
     getLastest,
@@ -330,4 +367,5 @@ export {
     getAnime,
     searchAnime,
     getEpisode,
+    getGenders,
 }

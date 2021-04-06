@@ -5,7 +5,7 @@ const appConfig = {
 const page = "https://monoschinos2.com";
 
 const urls = {
-    main: '',
+    main: page,
     emision:  page +'/emision?page=',
     search: page +'/search?q=',
     anime: page +'/anime',

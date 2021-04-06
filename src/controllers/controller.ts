@@ -50,7 +50,7 @@ async function getLastest(req: any, res: any) {
                 success: false
             })
     }
-}
+};
 async function getEmision(req: any, res: any) {
     try {
         let { page } = req.query;
@@ -98,7 +98,7 @@ async function getEmision(req: any, res: any) {
             success: false
         })
     }
-}
+};
 async function getAnime(req: any, res: any) {
     try {
         let { id } = req.params;
@@ -199,6 +199,58 @@ async function getAnime(req: any, res: any) {
             success: false
         });
     };
+};
+async function getAnimes(req, res) {
+    try {
+        let {page} = req.params;
+        !page ? page = 1 : page = page
+        
+
+        const bodyResponse = await axios.get(`${urls.main}/animes?page=${page}`);
+        const $ = cheerio.load(bodyResponse.data);
+
+        const animes = [];
+
+        $('.animes .container .row article').each((i, e) => {
+            let el = $(e);
+
+            let id = el.find('a').attr('href');
+            id = id.split('/')[4]
+            let title = el.find('.Title').text();
+            let img = el.find('.Image img').attr('src');
+            let category = el.find('.category').text();
+            category = category.substring(1, category.length)
+            let year = parseInt(el.find('.fecha').text());
+
+            const anime = {
+                id,
+                title,
+                img,
+                category,
+                year
+            }
+
+            animes.push(anime);
+        })
+
+        let totalPages:any = $('.pagination').children().length;
+        totalPages = $('.pagination').find('.page-item')[totalPages - 2];
+        let pages = parseInt($(totalPages).text());
+        let current = parseInt(page)
+        res.status(200)
+            .json({ 
+                current,
+                pages,
+                animes
+            })
+
+    } catch (err) {
+        res.status(500)
+            .json({
+                message: err.message,
+                success: false
+            })
+    }
 };
 async function searchAnime(req: any, res: any) {
     try {
@@ -345,7 +397,7 @@ async function getCategories(req, res) {
         res.status(200)
             .json(
                 categories,
-                )
+            )
     } catch (err) {
         res.status(500)
             .json({
@@ -390,6 +442,58 @@ async function getGenders(req, res) {
             })
     }
 };
+async function getGender(req:any, res:any) {
+    try {
+        let { gender } = req.params;
+        let { page } = req.params;
+        !page ? page = 1 : page = page
+        const bodyResponse = await axios.get(`${urls.main}/genero/${gender}?page=${page}`);
+        const $ = cheerio.load(bodyResponse.data);
+        const animes = [];
+
+        $('.animes .container .row article').each((i, e) => {
+            let el = $(e);
+
+            let id = el.find('a').attr('href');
+            id = id.split('/')[4]
+            let title = el.find('.Title').text();
+            let img = el.find('.Image img').attr('src');
+            let category = el.find('.category').text();
+            category = category.substring(1, category.length)
+            let year = parseInt(el.find('.fecha').text());
+
+            const anime = {
+                id,
+                title,
+                img,
+                category,
+                year
+            }
+
+            animes.push(anime);
+        })
+
+        let totalPages: any = $('.pagination').children().length;
+        totalPages = $('.pagination').find('.page-item')[totalPages - 2];
+        let pages = parseInt($(totalPages).text());
+
+        let current = parseInt(page)
+        res.status(200)
+            .json({ 
+                current,
+                pages,
+                animes
+            })
+
+    } catch (err) {
+        res.status(500)
+            .json({
+                message: err.message,
+                success: false
+            })
+    }
+    
+}
 async function getYears(req, res) {
     try {
         const response = await axios.get(`${urls.main}/animes`);
@@ -426,15 +530,174 @@ async function getYears(req, res) {
             })
     }
 };
+async function getYear(req: any, res: any) {
+    try {
+        let { year } = req.params;
+        let { page } = req.params;
+        !page ? page = 1 : page = page
+        const bodyResponse = await axios.get(`${urls.main}/year/${year}?page=${page}`);
+        const $ = cheerio.load(bodyResponse.data);
+        const animes = [];
 
+        $('.animes .container .row article').each((i, e) => {
+            let el = $(e);
+
+            let id = el.find('a').attr('href');
+            id = id.split('/')[4]
+            let title = el.find('.Title').text();
+            let img = el.find('.Image img').attr('src');
+            let category = el.find('.category').text();
+            category = category.substring(1, category.length)
+            let year = parseInt(el.find('.fecha').text());
+
+            const anime = {
+                id,
+                title,
+                img,
+                category,
+                year
+            }
+
+            animes.push(anime);
+        })
+
+        let totalPages: any = $('.pagination').children().length;
+        totalPages = $('.pagination').find('.page-item')[totalPages - 2];
+        let pages = parseInt($(totalPages).text());
+
+        let current = parseInt(page)
+        res.status(200)
+            .json({ 
+                current,
+                pages,
+                animes
+            })
+
+    } catch (err) {
+        res.status(500)
+            .json({
+                message: err.message,
+                success: false
+            })
+    }
+
+};
+async function getLetters(req, res) {
+    try {
+        const bodyResponse = await axios.get(`${urls.main}/animes`);
+        const $ = cheerio.load(bodyResponse.data);
+        const letters = []
+        let lettersContainer = $('.filter-container .clearfix .float-left')[3];
+        $(lettersContainer).find('.dropdown-menu .dropdown-item')
+            .each((i, e) => {
+                let el = $(e)
+                let title = el.text();
+                let id = el.attr('href');
+                id = id.split('/')[2];
+                let letter = {
+                    title,
+                    id
+                }
+                letters.push(letter)
+            })
+
+        res.status(200)
+            .json(
+                letters,
+                )
+
+    } catch (err) {
+        res.status(500)
+            .json({
+                message: err.message,
+                success: false
+            })
+    }
+};
+async function getBy(req, res, multiple?) {
+    try {
+        let {
+            gender,
+            letter,
+            category
+        } = req.params;
+
+        let {
+            page
+        } = req.query;
+
+        if (!page) {
+            page = 1
+        }
+
+        let bodyResponse;
+
+        if (multiple) {
+            bodyResponse = await axios.get(`${urls.main}/categoria/${category}/genero/${gender}?page=${page}`);
+        } else if (gender && !multiple) {
+            bodyResponse = await axios.get(`${urls.main}/genero/${gender}?page=${page}`);
+        } else if (letter && !multiple) {
+            bodyResponse = await axios.get(`${urls.main}/letra/${letter}?page=${page}`);
+        } else if (category && !multiple) {
+            bodyResponse = await axios.get(`${urls.main}/categoria/${category}?page=${page}`);
+        }
+        const $ = cheerio.load(bodyResponse.data);
+
+        const animes = [];
+
+        $('.animes .container .row article').each((i, e) => {
+            let el = $(e);
+            let id = el.find('.link-anime').attr('href');
+            id = id.split('/')[4];
+            let img = el.find('.link-anime .Image img').attr('src');
+            let title = el.find('.link-anime .Title').text();
+            let type = el.find('.link-anime .info .category').text();
+            let year = el.find('.link-anime .info .fecha').text();
+
+            let anime = {
+                id,
+                img,
+                title,
+                type,
+                year
+            }
+
+            animes.push(anime);
+
+        })
+
+        let totalPages:any = $('.pagination').children().length;
+        totalPages = $('.pagination').find('.page-item')[totalPages - 2];
+        let pages = parseInt($(totalPages).text());
+
+        res.status(200)
+            .json({
+                animes,
+                pages,
+                success: true
+            })
+
+    } catch (err) {
+        res.status(500)
+            .json({
+                message: err.message,
+                success: false
+            })
+    }
+}
 
 export {
     getLastest,
     getEmision,
     getAnime,
+    getAnimes,
     searchAnime,
     getEpisode,
     getCategories,
     getGenders,
+    getGender,
     getYears,
+    getYear,
+    getLetters,
+    getBy
 }

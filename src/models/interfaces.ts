@@ -3,14 +3,16 @@ export interface EmisionResponse{
     pages: number;
 }
 
-export interface EmisionI{
-    id?:string;
-    title:string;
-    cover:string;
-    category:string;
-    year:string;
+export interface EmisionI{   
+    id: string;
+    title: string;
+    img: string;
+    category: string;
+    year: number;
 }
+// const anime: {
 
+// }
 export interface LastestAnimeI {
     title: string
     cover: string
@@ -19,33 +21,33 @@ export interface LastestAnimeI {
     type: string
 }
 export interface AnimeI{
-    id?: string;
-    title?: string;
-    banner?: string;
-    type?: string;
-    cover?: string;
-    sinopsis?: string;
-    status?: string;
-    date?: string;
-    genders?: Array<GenderI>;
-    sugestions?: Array<SuggestionI>;
-    episodes?: Array<EpI>;
+    id: string;
+    title: string;
+    banner: string;
+    type: string;
+    cover: string;
+    sinopsis: string;
+    status: string;
+    date: string;
+    genders: GenderI[];
+    sugestions: SuggestionI[];
+    episodes: EpI[];
 }
 
 export interface GenderI{
-    id?:string;
+    id:string;
     title:string;
 }
 
 export interface SuggestionI{
-    id?:string;
-    title?:string;
-    cover?:string;
-    year?:number;
+    id:string;
+    title:string;
+    cover:string;
+    year:number;
 }
 export interface EpI{
-    id?:string;
-    number?:string;
+    id:string;
+    number:number;
 }
 
 export interface AnimeSearchI {

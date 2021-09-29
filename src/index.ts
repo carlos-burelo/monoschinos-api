@@ -2,8 +2,9 @@ import app from './app';
 import { appConfig } from './config'
 
 function init(host:any, port:any) {
-   app.listen(port, () => {
-      console.info(`API Running on: ${host}:${port}`);
+   app.listen(port, host, ( ) => {
+      console.clear()
+      console.info(`API Running on: ${host}:${port} ============================`);
    })
 }
 

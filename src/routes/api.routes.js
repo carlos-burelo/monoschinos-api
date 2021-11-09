@@ -1,20 +1,24 @@
 import { Router } from 'express';
 const routes = Router();
+
 import {
-  getAnime,
-  getAnimes,
-  searchAnime,
-  getEpisode,
+  getEmision,
   getGenders,
-  getGender,
+  getLastest,
+  getAnime,
+  searchAnime,
+  getAnimes,
+  getEpisode,
   getCategories,
   getYears,
-  getYear,
-  getLetters,
   getBy,
-} from '../controllers/controller';
+} from '../controllers/index.js';
 
-import { getEmision, getLastest } from '../controllers';
+routes.get('/', (_, res) => {
+  res.json({
+    message: 'API Works',
+  });
+});
 
 routes.get('/lastest', (req, res) => {
   getLastest(req, res);
@@ -37,33 +41,33 @@ routes.get('/search/:id', (req, res) => {
 routes.get('/genders', (req, res) => {
   getGenders(req, res);
 });
-routes.get('/gender/:gender/:page', (req, res) => {
-  getGender(req, res);
-});
+
 routes.get('/categories', (req, res) => {
   getCategories(req, res);
 });
 routes.get('/years', (req, res) => {
   getYears(req, res);
 });
-routes.get('/year/:year/:page', (req, res) => {
-  getYear(req, res);
-});
+
 routes.get('/letters', (req, res) => {
   getLetters(req, res);
 });
-routes.get('/category/:category/gender/:gender', (req, res) => {
-  getBy(req, res, true);
-});
-routes.get('/gender/:gender', (req, res) => {
-  getBy(req, res);
-});
 
-routes.get('/letter/:letter', (req, res) => {
+routes.get('/by', (req, res) => {
   getBy(req, res);
 });
+// routes.get('/category/:category/gender/:gender', (req, res) => {
+//   getBy(req, res, true);
+// });
+// routes.get('/gender/:gender', (req, res) => {
+//   getBy(req, res);
+// });
 
-routes.get('/category/:category', (req, res) => {
-  getBy(req, res);
-});
+// routes.get('/letter/:letter', (req, res) => {
+//   getBy(req, res);
+// });
+
+// routes.get('/category/:category', (req, res) => {
+//   getBy(req, res);
+// });
 export default routes;

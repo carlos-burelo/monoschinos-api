@@ -1,10 +1,6 @@
-const appConfig = {
-  host: process.env.HOST || 'localhost',
-  port: process.env.PORT || 5000,
-};
 const page = 'https://monoschinos2.com';
 
-const urls = {
+export const urls = {
   main: page,
   emision: page + '/emision?page=',
   search: page + '/search?q=',
@@ -15,4 +11,9 @@ const urls = {
   ova: page + '/categoria/ova',
 };
 
-export { urls, appConfig };
+/**
+ * @returns {string}
+ */
+export function getAttr(html, selector, attr) {
+  return html.querySelector(selector).attributes[attr];
+}

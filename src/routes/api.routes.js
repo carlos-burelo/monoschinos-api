@@ -17,6 +17,27 @@ import {
 routes.get('/', (_, res) => {
   res.json({
     message: 'API Works',
+    endpoints: {
+      lastest: '/lastest',
+      emision: '/emision',
+      getAnimeByID: '/anime/:id',
+      getAnimesByPage: '/animes/:page',
+      getEpisodeByID: '/ver/:id',
+      searchAnimeByID: '/search/:id',
+      getYears: '/years',
+      getGenders: '/genders',
+      getLetters: '/letter',
+      getCategories: '/categories',
+      getByParams: {
+        example: '/?gender=drama&sort=title&order=asc',
+        filters: ['gender', 'year', 'category', 'letter'],
+        querys: {
+          sort: '&sort={prop}',
+          order: '&order=asc',
+          limit: '&limit=3...(soon)',
+        },
+      },
+    },
   });
 });
 
@@ -41,18 +62,15 @@ routes.get('/search/:id', (req, res) => {
 routes.get('/genders', (req, res) => {
   getGenders(req, res);
 });
-
 routes.get('/categories', (req, res) => {
   getCategories(req, res);
 });
 routes.get('/years', (req, res) => {
   getYears(req, res);
 });
-
 routes.get('/letters', (req, res) => {
   getLetters(req, res);
 });
-
 routes.get('/by', (req, res) => {
   getBy(req, res);
 });

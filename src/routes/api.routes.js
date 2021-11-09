@@ -36,6 +36,7 @@ routes.get('/', (_, res) => {
         querys: {
           sort: '&sort={prop}',
           order: '&order=asc',
+          page: '&page={number}',
           limit: '&limit=3...(soon)',
         },
       },

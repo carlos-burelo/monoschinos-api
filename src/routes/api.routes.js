@@ -56,18 +56,4 @@ routes.get('/letters', (req, res) => {
 routes.get('/by', (req, res) => {
   getBy(req, res);
 });
-// routes.get('/category/:category/gender/:gender', (req, res) => {
-//   getBy(req, res, true);
-// });
-// routes.get('/gender/:gender', (req, res) => {
-//   getBy(req, res);
-// });
-
-// routes.get('/letter/:letter', (req, res) => {
-//   getBy(req, res);
-// });
-
-// routes.get('/category/:category', (req, res) => {
-//   getBy(req, res);
-// });
 export default routes;

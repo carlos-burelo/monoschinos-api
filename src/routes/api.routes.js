@@ -17,6 +17,8 @@ import {
 routes.get('/', (_, res) => {
   res.json({
     message: 'API Works',
+    author: 'Carlos Burelo',
+    repository: 'https://github.com/carlos-burelo/monoschinos-api-ts',
     endpoints: {
       lastest: '/lastest',
       emision: '/emision',

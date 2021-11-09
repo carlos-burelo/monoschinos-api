@@ -31,7 +31,7 @@ routes.get('/', (_, res) => {
       getLetters: '/letter',
       getCategories: '/categories',
       getByParams: {
-        example: '/?gender=drama&sort=title&order=asc',
+        example: '/by?gender=drama&sort=title&order=asc',
         filters: ['gender', 'year', 'category', 'letter'],
         querys: {
           sort: '&sort={prop}',

@@ -7,38 +7,54 @@ export async function getEpisode(req, res) {
     const { id } = req.params;
     const { data } = await axios.get(`${urls.episode}/${id}`);
     const html = parse(data);
-    const map = {
-      Anterior: true,
-      Siguiente: true,
-    };
-    const videos = html.querySelectorAll('.TPlayer.mt-3.mb-3 .TPlayerTb').map((i) => {
-      const tag = parse(i.text);
-      return tag.querySelector('iframe')?.attributes['src'];
+    const ctrls = html.querySelectorAll('.controldiv2 a');
+    let nav = {};
+    let mapc = ctrls.map((e, i) => {
+      let elem = e.querySelector('img').classList;
+      return !elem.contains('playlist');
     });
-    const servers = html.querySelectorAll('#downloads table tbody tr').map((i) => {
+    if (mapc.length == 3) {
+      nav = { next: true, prev: true };
+    } else {
+      if (mapc[1] == true) nav = { next: true, prev: false };
+      if (mapc[1] == false) nav = { next: false, prev: true };
+    }
+    const nextEpisodes = html.querySelectorAll('.nextplay:nth-child(1) .nextplays a').map((i) => {
       return {
-        name: getAttr(i, 'a', 'href').match(/\/\/(.+)\//)[1],
-        url: getAttr(i, 'a', 'href'),
+        image: getAttr(i, '.nxtmainimg', 'src'),
+        date: i.querySelector('.nxtplaybtn p').text,
+        title: i.querySelector('.nxtplaybtn h5').text,
+        no: i.querySelector('.nxtplaybtn span').text,
       };
     });
-    const ctrls = {};
-    html.querySelectorAll('.d-flex.justify-content-center.mb-4 a').forEach((i) => {
-      const id = i.text.replace(/\s/g, '');
-      let key;
-      id == 'Siguiente' ? (key = 'next') : id == 'Anterior' ? (key = 'prev') : 'menu';
-      ctrls[key] = map[id];
-    });
-    delete ctrls['menu'];
+    const imgNotFound =
+      'https://konachan.com/image/bbb46f65d3130526c20fcd781d6800cf/Konachan.com%20-%2041974%20fuura_kafuka%20itoshiki_nozomu%20sayonara_zetsubou_sensei%20white.png';
     res.json({
-      title: html.querySelector('.Title-epi').text,
-      no: parseInt(id.split('-').pop()) || 0,
-      animeId: getAttr(html, 'a.btnWeb.green.Current', 'href').replace(
-        'https://monoschinos2.com/anime/',
-        ''
-      ),
-      videos: videos.filter((i) => i !== undefined),
-      servers,
-      ctrls,
+      title: html.querySelector('.heromain_h1').text.replace(/Sub\sEspañol/gi, ''),
+      nextEpisodes: nextEpisodes.length == 0 ? null : nextEpisodes,
+      ctrs: nav,
+      sugestions: html.querySelectorAll('.nextplay:nth-child(2) .nextplays a').map((i) => {
+        const image = getAttr(i, '.nxtmainimg', 'src');
+        return {
+          image: image.length == 0 || !image ? imgNotFound : image,
+          date: i.querySelector('.nxtplaybtn p').text,
+          title: i.querySelector('.nxtplaybtn h5').text,
+          no: i.querySelector('.nxtplaybtn span').text,
+        };
+      }),
+      videos: html.querySelectorAll('.dropdown-menu.dropcap #play-video').map((i) => {
+        const base64 = getAttr(i, 'a', 'data-player');
+        return {
+          title: i.querySelector('a').text,
+          url: Buffer.from(base64, 'base64').toString('ascii'),
+        };
+      }),
+      downloads: html.querySelectorAll('.downbtns a').map((i) => {
+        return {
+          title: i.text,
+          url: i.attrs['href'],
+        };
+      }),
     });
   } catch (err) {
     res.status(500).json({

@@ -7,15 +7,12 @@ export async function getAnimes(req, res) {
     let { page = '1' } = req.params;
     const { data } = await axios.get(`${urls.main}/animes?page=${page}`);
     const html = parse(data);
-    res.json(
-      html.querySelectorAll('.animes .container .row article').map((i) => {
-        const id = getAttr(i, 'a', 'href');
+    res.status(200).json(
+      html.querySelectorAll('.heromain .row .col-md-4.col-lg-2.col-6').map((i) => {
         return {
-          id: id.split('/').pop() || null,
-          title: i.querySelector('.Title').text || null,
-          image: getAttr(i, '.Image img', 'src') || null,
-          type: i.querySelector('.category.text-uppercase').text || null,
-          year: parseInt(i.querySelector('.fecha').text) || null,
+          id: getAttr(i, 'a', 'href').split('/').pop() || null,
+          title: i.querySelector('.seristitles').text.trim() || null,
+          image: getAttr(i, '.animemainimg', 'src') || null,
         };
       })
     );

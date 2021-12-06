@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import routes from './routes/api.routes.js';
+import routes from './router.js';
 const app = express();
 app.use(cors(), morgan('dev'));
 app.use('/', routes);

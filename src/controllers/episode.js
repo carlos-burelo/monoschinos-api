@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { getAttr, urls } from '../config.js';
+import { attr, api } from '../config.js';
 import { parse } from 'node-html-parser';
 
 export async function getEpisode(req, res) {
   try {
     const { id } = req.params;
-    const { data } = await axios.get(`${urls.episode}/${id}`);
+    const { data } = await axios.get(api.episode(id));
     const html = parse(data);
     const ctrls = html.querySelectorAll('.controldiv2 a');
     let nav = {};
@@ -21,7 +21,7 @@ export async function getEpisode(req, res) {
     }
     const nextEpisodes = html.querySelectorAll('.nextplay:nth-child(1) .nextplays a').map((i) => {
       return {
-        image: getAttr(i, '.nxtmainimg', 'src'),
+        image: attr(i, '.nxtmainimg', 'src'),
         date: i.querySelector('.nxtplaybtn p').text,
         title: i.querySelector('.nxtplaybtn h5').text,
         no: i.querySelector('.nxtplaybtn span').text,
@@ -34,7 +34,7 @@ export async function getEpisode(req, res) {
       nextEpisodes: nextEpisodes.length == 0 ? null : nextEpisodes,
       ctrs: nav,
       sugestions: html.querySelectorAll('.nextplay:nth-child(2) .nextplays a').map((i) => {
-        const image = getAttr(i, '.nxtmainimg', 'src');
+        const image = attr(i, '.nxtmainimg', 'src');
         return {
           image: image.length == 0 || !image ? imgNotFound : image,
           date: i.querySelector('.nxtplaybtn p').text,
@@ -43,7 +43,7 @@ export async function getEpisode(req, res) {
         };
       }),
       videos: html.querySelectorAll('.dropdown-menu.dropcap #play-video').map((i) => {
-        const base64 = getAttr(i, 'a', 'data-player');
+        const base64 = attr(i, 'a', 'data-player');
         return {
           title: i.querySelector('a').text,
           url: Buffer.from(base64, 'base64').toString('ascii'),

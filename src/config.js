@@ -1,19 +1,17 @@
-const page = 'https://monoschinos2.com';
+const url = 'https://monoschinos2.com';
 
-export const urls = {
-  main: page,
-  emision: page + '/emision?page=',
-  search: page + '/search?q=',
-  anime: page + '/anime',
-  episode: page + '/ver',
-  gender: page + '/genero',
-  letter: page + '/letra',
-  ova: page + '/categoria/ova',
+export const api = {
+  home: `${url}`,
+  all: (id) => `${url}/animes?p=${id}`,
+  emision: (id) => `${url}/emision?p=${id}`,
+  calendar: `${url}/calendario`,
+  search: (id, page) => `${url}/buscar?q=${id.replace(/\s/g, '+')}&p=${page}`,
+  anime: (id) => `${url}/anime/${id}`,
+  episode: (id) => `${url}/ver/${id}`,
+  gender: (id) => `${url}/genero/${id}`,
+  filter: ({ categoria, fecha, genero, letra, pagina }) =>
+    `${url}/animes?categoria=${categoria}&genero=${genero}&fecha=${fecha}&letra=${letra}&p=${pagina}`,
 };
-
-/**
- * @returns {string}
- */
-export function getAttr(html, selector, attr) {
-  return html.querySelector(selector).attributes[attr];
+export function attr(html, selector, attribute = 'src') {
+  return html.querySelector(selector)?.attributes[attribute];
 }

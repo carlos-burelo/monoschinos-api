@@ -42,10 +42,11 @@ export async function getEpisode(req, res) {
           no: i.querySelector('.nxtplaybtn span').text,
         };
       }),
-      videos: html.querySelectorAll('.dropdown-menu.dropcap #play-video').map((i) => {
-        const base64 = attr(i, 'a', 'data-player');
+      videos: html.querySelectorAll('.dropcaps .play-video').map((i) => {
+        const base64 = i.attrs['data-player'];
+        const title = i.rawText;
         return {
-          title: i.querySelector('a').text,
+          title,
           url: Buffer.from(base64, 'base64').toString('ascii'),
         };
       }),
@@ -62,3 +63,4 @@ export async function getEpisode(req, res) {
     });
   }
 }
+

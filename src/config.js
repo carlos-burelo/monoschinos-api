@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const maskScrapingHeaders = {
   'User-Agent':
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
@@ -26,4 +28,8 @@ export const api = {
 };
 export function attr(html, selector, attribute = 'src') {
   return html.querySelector(selector)?.attributes[attribute];
+}
+
+export function get(url) {
+  return axios.get(url, { headers: { ...maskScrapingHeaders } });
 }

@@ -7,6 +7,7 @@ export async function getEpisode(req, res) {
     const { data } = await get(api.episode(id));
     const html = parse(data);
     const ctrls = html.querySelectorAll('.controldiv2 a');
+
     let nav = {};
     let mapc = ctrls.map((e, i) => {
       let elem = e.querySelector('img').classList;
@@ -32,7 +33,7 @@ export async function getEpisode(req, res) {
       title: html.querySelector('.heromain_h1').text.replace(/Sub\sEspañol/gi, ''),
       nextEpisodes: nextEpisodes.length == 0 ? null : nextEpisodes,
       ctrs: nav,
-      sugestions: html.querySelectorAll('.nextplay:nth-child(2) .nextplays a').map((i) => {
+      sugestions: html.querySelectorAll('.nextplay:nth-child(3) .nextplays a').map((i) => {
         const image = attr(i, '.nxtmainimg', 'src');
         return {
           image: image.length == 0 || !image ? imgNotFound : image,

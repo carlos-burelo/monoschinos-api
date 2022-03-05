@@ -11,7 +11,7 @@ export async function getLastest(req, res) {
         return {
           id: id || null,
           title: i.querySelector('.animetitles')?.text || null,
-          image: attr(i, '.animeimghv') || null,
+          image: attr(i, '.animeimgdiv img', 'data-src') || null,
           type: i.querySelector('.positioning button').text.trim() || null,
           no: parseInt(i.querySelector('.positioning h5').text.trim() || '0') || null,
         };

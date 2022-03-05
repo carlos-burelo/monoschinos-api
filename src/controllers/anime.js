@@ -1,12 +1,11 @@
-import axios from 'axios';
-import { attr, api } from '../config.js';
+import { attr, api, get } from '../config.js';
 import { parse } from 'node-html-parser';
 
 export async function getAnime(req, res) {
   try {
     const url = 'https://monoschinos2.com/';
     const { id } = req.params;
-    const { data } = await axios.get(api.anime(id));
+    const { data } = await get(api.anime(id));
     const html = parse(data);
     const date = html.querySelectorAll('.breadcrumb')[1].querySelector('.breadcrumb-item').text;
     res.status(200).json({

@@ -1,12 +1,10 @@
 import { parse } from 'node-html-parser';
-import axios from 'axios';
-import { attr, api } from '../config.js';
-
+import { attr, api, get } from '../config.js';
 
 export async function getAnimes(req, res) {
   try {
     let { page = '1' } = req.params;
-    const { data } = await axios.get(`${api.all(page)}`);
+    const { data } = await get(`${api.all(page)}`);
     const html = parse(data);
     res.status(200).json(
       html.querySelectorAll('.heromain .row .col-md-4.col-lg-2.col-6').map((i) => {
@@ -23,4 +21,3 @@ export async function getAnimes(req, res) {
     });
   }
 }
-

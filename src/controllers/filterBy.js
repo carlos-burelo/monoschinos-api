@@ -1,6 +1,5 @@
-import axios from 'axios';
 import { parse } from 'node-html-parser';
-import { api, attr } from '../config.js';
+import { api, attr, get } from '../config.js';
 
 export async function filterBy(req, res) {
   try {
@@ -11,7 +10,7 @@ export async function filterBy(req, res) {
       letra = 'false',
       pagina = '1',
     } = req.query;
-    const { data } = await axios.get(`${api.filter({ categoria, fecha, genero, letra, pagina })}`);
+    const { data } = await get(`${api.filter({ categoria, fecha, genero, letra, pagina })}`);
     const html = parse(data);
     res.status(200).json(
       html.querySelectorAll('.heromain .row .col-md-4.col-lg-2.col-6').map((i) => {

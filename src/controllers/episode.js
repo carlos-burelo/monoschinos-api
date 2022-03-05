@@ -1,11 +1,10 @@
-import axios from 'axios';
-import { attr, api } from '../config.js';
+import { attr, api, get } from '../config.js';
 import { parse } from 'node-html-parser';
 
 export async function getEpisode(req, res) {
   try {
     const { id } = req.params;
-    const { data } = await axios.get(api.episode(id));
+    const { data } = await get(api.episode(id));
     const html = parse(data);
     const ctrls = html.querySelectorAll('.controldiv2 a');
     let nav = {};
@@ -63,4 +62,3 @@ export async function getEpisode(req, res) {
     });
   }
 }
-

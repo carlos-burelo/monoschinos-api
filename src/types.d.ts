@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-export type Controller<Type = any> = (req: Request, res: Response) => Promise<Type>
+export type Controller = (req: Request, res: Response) => void
 
 export interface Lastest {
   id: string
@@ -8,4 +8,29 @@ export interface Lastest {
   image: string
   type: string
   no: number
+}
+export interface API {
+  home: string
+  all: (id: any) => string
+  emision: (id: any) => string
+  calendar: string
+  search: (id: string, page: any) => string
+  anime: (id: string) => string
+  episode: (id: string) => string
+  gender: (id: string) => string
+  filter: ({ categoria, fecha, genero, letra, pagina }: Filters) => string
+}
+
+export interface Filters {
+  categoria: string
+  fecha: string
+  genero: string
+  letra: string
+  pagina: string
+}
+
+export interface AnimeBasicFields {
+  id: string
+  title: string
+  image: string
 }

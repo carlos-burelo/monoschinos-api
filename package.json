@@ -4,8 +4,9 @@
   "description": "REST API written in Typescript and Node JS under the concept of Web Scraping, to extract data from the Monoschinos2.com page",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon"
+    "start": "node dist/index.js",
+    "dev": "nodemon",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

@@ -1,17 +1,18 @@
+import { api, attr, get, parse } from '../api'
 import { Controller } from '../types'
-import { get, parse, attr, api } from '../api'
 
-export const getAll: Controller = async (req, res) => {
+export const searchAnime: Controller = async (req, res) => {
   try {
+    const { id } = req.params
     const { page = '1' } = req.query
-    const { data } = await get(api.all(page))
+    const { data } = await get(api.search(id, page))
     const html = parse(data)
-    res.status(200).json(
+    res.json(
       html.querySelectorAll('.heromain .row .col-md-4.col-lg-2.col-6').map(i => {
         return {
           id: attr(i, 'a', 'href').split('/').pop() || null,
-          title: i.querySelector('.seristitles')?.text.trim() || null,
-          image: attr(i, '.animemainimg', 'src') || null,
+          title: i.querySelector('.seristitles ')?.text || null,
+          image: attr(i, '.seriesimg .animemainimg', 'src') || null,
         }
       })
     )

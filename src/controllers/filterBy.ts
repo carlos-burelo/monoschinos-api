@@ -1,10 +1,16 @@
+import { api, attr, get, parse } from '../api'
 import { Controller } from '../types'
-import { get, parse, attr, api } from '../api'
 
-export const getAll: Controller = async (req, res) => {
+export const filterBy: Controller = async (req, res) => {
   try {
-    const { page = '1' } = req.query
-    const { data } = await get(api.all(page))
+    const {
+      categoria = 'false',
+      fecha = 'false',
+      genero = 'false',
+      letra = 'false',
+      pagina = '1',
+    }: { [key: string]: any } = req.query
+    const { data } = await get(api.filter({ categoria, fecha, genero, letra, pagina }))
     const html = parse(data)
     res.status(200).json(
       html.querySelectorAll('.heromain .row .col-md-4.col-lg-2.col-6').map(i => {

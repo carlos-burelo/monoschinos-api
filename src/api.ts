@@ -1,6 +1,6 @@
 import axios from 'axios'
+import { NextFunction, Request, Response } from 'express'
 import { parse } from 'node-html-parser'
-
 import { API } from './types'
 
 export const headers = {
@@ -34,4 +34,10 @@ export function attr(
 ) {
   return html.querySelector(selector)?.attributes[attribute as any] as unknown as string
 }
+export const cache = (req: Request, res: Response, next: NextFunction) => {
+  const period = 60 * 5
+  res.set('Cache-control', `public, max-age=${period}`)
+  next()
+}
+
 export { parse }

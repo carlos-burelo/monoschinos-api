@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 
 export type Controller = (req: Request, res: Response) => void
 
-export interface Lastest {
+export interface Latest {
   id: string
   title: string
   image: string

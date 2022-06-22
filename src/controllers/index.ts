@@ -1,6 +1,6 @@
 export * from './all'
 export * from './anime'
-export * from './lastest'
+export * from './latest'
 export * from './calendar'
 export * from './emision'
 export * from './search'

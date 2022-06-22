@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import {
   getAll,
-  getLastest,
+  getLatest,
   getCalendar,
   getEmision,
   getAnime,
@@ -18,23 +18,23 @@ routes.get('/', (_, res) => {
     author: 'Carlos Burelo',
     repository: 'https://github.com/carlos-burelo/monoschinos-api-v2',
     endpoints: {
-      lastest: '/lastest',
+      latest: '/latest',
       emision: '/emision',
       calendar: '/week',
       getAnimeByID: '/anime/:id',
-      getAnimesByPage: '/all',
+      getAnimeByPage: '/all',
       getEpisodeByID: '/ver/:id',
       searchAnimeByID: '/search/:id',
       filterBy: {
         path: '/filterBy',
-        querys: ['categoria', 'fecha', 'genero', 'letra', 'pagina'],
+        query: ['categoria', 'fecha', 'genero', 'letra', 'pagina'],
       },
     },
   })
 })
 
 routes.get('/all', getAll)
-routes.get('/lastest', getLastest)
+routes.get(['/lastest', '/latest'], getLatest)
 routes.get('/week', getCalendar)
 routes.get('/emision', getEmision)
 routes.get('/anime/:id', getAnime)

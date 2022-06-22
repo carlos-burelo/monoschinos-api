@@ -22,12 +22,12 @@ routes.get('/', (_, res) => {
       emision: '/emision',
       calendar: '/week',
       getAnimeByID: '/anime/:id',
-      getAnimesByPage: '/all',
+      getAnimeByPage: '/all',
       getEpisodeByID: '/ver/:id',
       searchAnimeByID: '/search/:id',
       filterBy: {
         path: '/filterBy',
-        querys: ['categoria', 'fecha', 'genero', 'letra', 'pagina'],
+        query: ['categoria', 'fecha', 'genero', 'letra', 'pagina'],
       },
     },
   })

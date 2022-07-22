@@ -22,9 +22,10 @@ export const api: API = {
     `${url}/animes?categoria=${categoria}&genero=${genero}&fecha=${fecha}&letra=${letra}&p=${pagina}`,
 }
 
-export async function get(url: string) {
+export async function parser(url: string) {
   const response = await fetch(url, { headers })
-  return await response.text()
+  const html = await response.text()
+  return parse(html)
 }
 
 export function attr(
@@ -39,5 +40,3 @@ export const cache = (req: Request, res: Response, next: NextFunction) => {
   res.set('Cache-control', `public, max-age=${period}`)
   next()
 }
-
-export { parse }

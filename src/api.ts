@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from '@tinyhttp/app'
 import { parse } from 'node-html-parser'
 import type { API } from './types.d.js'
+import fetch from 'node-fetch'
 
 export const headers = {
   'User-Agent':
@@ -23,7 +23,7 @@ export const api: API = {
 }
 
 export async function parser(url: string) {
-  const response = await fetch(url, { headers })
+  const response = await fetch(url, { headers, method: 'GET' })
   const html = await response.text()
   return parse(html)
 }
@@ -34,9 +34,4 @@ export function attr(
   attribute: string | undefined = 'src'
 ) {
   return html.querySelector(selector)?.attributes[attribute as any] as unknown as string
-}
-export const cache = (req: Request, res: Response, next: NextFunction) => {
-  const period = 60 * 5
-  res.set('Cache-control', `public, max-age=${period}`)
-  next()
 }

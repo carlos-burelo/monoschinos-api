@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, Response } from '@tinyhttp/app'
 
 export type Controller = (req: Request, res: Response) => void
 

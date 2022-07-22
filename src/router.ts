@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { App } from '@tinyhttp/app'
 import {
   FembedRaw,
   filterBy,
@@ -11,7 +11,7 @@ import {
   searchAnime,
 } from './controllers'
 
-const routes = Router()
+const routes = new App()
 
 routes.get('/', (_, res) => {
   res.json({
@@ -39,7 +39,8 @@ routes.get('/', (_, res) => {
 routes.get('/all', getAll)
 routes.get('/raw/:id', FembedRaw)
 routes.get('/lastest', getLatest)
-routes.get(['/lastest', '/latest'], getLatest)
+routes.get('/lastest', getLatest)
+routes.get('/latest', getLatest)
 routes.get('/week', getCalendar)
 routes.get('/emision', getEmision)
 routes.get('/anime/:id', getAnime)

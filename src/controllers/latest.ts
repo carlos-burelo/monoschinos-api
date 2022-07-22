@@ -1,7 +1,7 @@
 import type { Controller } from '../types.d.js'
 import { parser, attr, url } from '../api.js'
 
-export const getLatest: Controller = async (req, res) => {
+export const getLatest: Controller = async (_, res) => {
   try {
     const html = await parser(url)
     res.json(

@@ -1,12 +1,14 @@
 import { App } from '@tinyhttp/app'
 import routes from './router.js'
-import { lruSend as cache } from 'lru-send'
 import { cors } from '@tinyhttp/cors'
 
-
 const app = new App()
-app.use(cache())
+
 app.use(cors())
+app.use('/', (_, res, next) => {
+  res.setHeader('Cache-Control', 'public, max-age=300')
+  next()
+})
 app.use('/', routes)
 
 const port: number = process.env.PORT ? parseInt(process.env.PORT) : 5000

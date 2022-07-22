@@ -1,5 +1,5 @@
 {
   "ext": "ts",
-  "exec": "ts-node -r dotenv/config src/index.ts",
+  "exec": "ts-node -r src/index.ts",
   "ignore": ["node_modules/*"]
 }

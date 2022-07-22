@@ -1,11 +1,11 @@
+import apicache from 'apicache'
 import cors from 'cors'
 import express from 'express'
-import { cache } from './api'
 import routes from './router'
 
 const app = express()
-
-app.use(cache)
+const cache = apicache.middleware
+app.use(cache('5 seconds', (e: any) => console.log(e)))
 app.use(cors())
 app.use('/', routes)
 

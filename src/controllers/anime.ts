@@ -1,4 +1,4 @@
-import { attr, api, parser } from '../api'
+import { attr, api, parser } from '../api.js'
 import { Controller } from '../types.js'
 
 export const getAnime: Controller = async (req, res) => {

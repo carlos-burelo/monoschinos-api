@@ -1,5 +1,5 @@
-import { attr, api, parser } from '../api'
-import { Controller } from '../types'
+import { attr, api, parser } from '../api.js'
+import type { Controller } from '../types.d.js'
 
 export const getEmision: Controller = async (req, res) => {
   try {

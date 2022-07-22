@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from '@tinyhttp/app'
 import { parse } from 'node-html-parser'
-import { API } from './types'
+import type { API } from './types.d.js'
 
 export const headers = {
   'User-Agent':

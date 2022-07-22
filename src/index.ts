@@ -1,5 +1,5 @@
 import { App } from '@tinyhttp/app'
-import routes from './router'
+import routes from './router.js'
 import { lruSend as cache } from 'lru-send'
 import { cors } from '@tinyhttp/cors'
 

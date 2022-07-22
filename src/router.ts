@@ -9,7 +9,7 @@ import {
   getEpisode,
   getLatest,
   searchAnime,
-} from './controllers'
+} from './controllers/index.js'
 
 const routes = new App()
 

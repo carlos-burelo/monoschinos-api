@@ -1,4 +1,4 @@
-import { Controller } from '../types'
+import type { Controller } from '../types.d.js'
 
 export const FembedRaw: Controller = async (req, res) => {
   try {

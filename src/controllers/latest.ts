@@ -1,5 +1,5 @@
-import { Controller } from '../types'
-import { parser, attr, url } from '../api'
+import type { Controller } from '../types.d.js'
+import { parser, attr, url } from '../api.js'
 
 export const getLatest: Controller = async (req, res) => {
   try {

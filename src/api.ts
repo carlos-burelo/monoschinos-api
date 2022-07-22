@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { NextFunction, Request, Response } from 'express'
 import { parse } from 'node-html-parser'
 import { API } from './types'
@@ -23,8 +22,9 @@ export const api: API = {
     `${url}/animes?categoria=${categoria}&genero=${genero}&fecha=${fecha}&letra=${letra}&p=${pagina}`,
 }
 
-export function get(url: string) {
-  return axios.get(url, { headers })
+export async function get(url: string) {
+  const response = await fetch(url, { headers })
+  return await response.text()
 }
 
 export function attr(

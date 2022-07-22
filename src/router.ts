@@ -1,13 +1,14 @@
 import { Router } from 'express'
 import {
+  FembedRaw,
+  filterBy,
   getAll,
-  getLastest,
+  getAnime,
   getCalendar,
   getEmision,
-  getAnime,
-  searchAnime,
   getEpisode,
-  filterBy,
+  getLastest,
+  searchAnime,
 } from './controllers'
 
 const routes = Router()
@@ -19,6 +20,7 @@ routes.get('/', (_, res) => {
     repository: 'https://github.com/carlos-burelo/monoschinos-api-v2',
     endpoints: {
       lastest: '/lastest',
+      raw: '/raw/:id',
       emision: '/emision',
       calendar: '/week',
       getAnimeByID: '/anime/:id',
@@ -34,6 +36,7 @@ routes.get('/', (_, res) => {
 })
 
 routes.get('/all', getAll)
+routes.get('/raw/:id', FembedRaw)
 routes.get('/lastest', getLastest)
 routes.get('/week', getCalendar)
 routes.get('/emision', getEmision)

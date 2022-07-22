@@ -21,7 +21,7 @@
   "dependencies": {
     "@tinyhttp/app": "^2.0.22",
     "@tinyhttp/cors": "^2.0.0",
-    "lru-send": "^0.1.3",
+    "node-fetch": "^3.2.9",
     "node-html-parser": "^5.1.0"
   }
 }

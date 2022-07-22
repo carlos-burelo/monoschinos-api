@@ -1,7 +1,7 @@
 import { Controller } from '../types'
 import { get, parse, attr, url } from '../api'
 
-export const getLastest: Controller = async (req, res) => {
+export const getLatest: Controller = async (req, res) => {
   try {
     const { data } = await get(url)
     const html = parse(data)
@@ -13,7 +13,7 @@ export const getLastest: Controller = async (req, res) => {
           title: i.querySelector('.animetitles')?.text || null,
           image: attr(i, '.animeimgdiv img', 'data-src') || null,
           type: i.querySelector('.positioning button')?.text.trim() || null,
-          no: parseInt(i.querySelector('.positioning h5')?.text.trim() || '0') || null,
+          no: parseInt(i.querySelector('.positioning p')?.text.trim() || '0') || null,
         }
       })
     )

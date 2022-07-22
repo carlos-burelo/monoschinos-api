@@ -1,6 +1,6 @@
 ## Endpoints
 
-> PATH: /lastest
+> PATH: /latest
 
 |Querys|Params|
 |-|-|

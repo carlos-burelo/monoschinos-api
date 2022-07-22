@@ -7,7 +7,7 @@ import {
   getCalendar,
   getEmision,
   getEpisode,
-  getLastest,
+  getLatest,
   searchAnime,
 } from './controllers'
 
@@ -21,15 +21,16 @@ routes.get('/', (_, res) => {
     endpoints: {
       lastest: '/lastest',
       raw: '/raw/:id',
+      latest: '/latest',
       emision: '/emision',
       calendar: '/week',
       getAnimeByID: '/anime/:id',
-      getAnimesByPage: '/all',
+      getAnimeByPage: '/all',
       getEpisodeByID: '/ver/:id',
       searchAnimeByID: '/search/:id',
       filterBy: {
         path: '/filterBy',
-        querys: ['categoria', 'fecha', 'genero', 'letra', 'pagina'],
+        query: ['categoria', 'fecha', 'genero', 'letra', 'pagina'],
       },
     },
   })
@@ -37,7 +38,8 @@ routes.get('/', (_, res) => {
 
 routes.get('/all', getAll)
 routes.get('/raw/:id', FembedRaw)
-routes.get('/lastest', getLastest)
+routes.get('/lastest', getLatest)
+routes.get(['/lastest', '/latest'], getLatest)
 routes.get('/week', getCalendar)
 routes.get('/emision', getEmision)
 routes.get('/anime/:id', getAnime)

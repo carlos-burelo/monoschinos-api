@@ -1,11 +1,10 @@
-import { attr, api, get, parse } from '../api'
+import { attr, api, parser } from '../api'
 import { Controller } from '../types'
 
 export const getEmision: Controller = async (req, res) => {
   try {
     const { page = '1' } = req.query
-    const { data } = await get(api.emision(page))
-    const html = parse(data)
+    const html = await parser(api.emision(page))
     res.status(200).json(
       html.querySelectorAll('.heromain .row .col-md-4.col-lg-2.col-6').map(i => {
         return {

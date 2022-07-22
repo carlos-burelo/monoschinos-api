@@ -1,10 +1,9 @@
-import { attr, api, get, parse } from '../api'
+import { attr, api, parser } from '../api'
 import { Controller } from '../types'
 
 export const getCalendar: Controller = async (req, res) => {
   try {
-    const { data } = await get(api.calendar)
-    const html = parse(data)
+    const html = await parser(api.calendar)
     res.status(200).json(
       html.querySelectorAll('.heromain [data-dia]').map(i => {
         const day = i.getAttribute('data-dia')

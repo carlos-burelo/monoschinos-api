@@ -1,13 +1,11 @@
-import { attr, api, get, parse } from '../api'
-
+import { attr, api, parser } from '../api'
 import { Controller } from '../types.js'
 
 export const getAnime: Controller = async (req, res) => {
   try {
     const url = 'https://monoschinos2.com/'
     const { id } = req.params
-    const { data } = await get(api.anime(id))
-    const html = parse(data)
+    const html = await parser(api.anime(id))
     const date = html.querySelectorAll('.breadcrumb')[1].querySelector('.breadcrumb-item')?.text
     res.status(200).json({
       banner: attr(html, '.herobg img', 'src'),

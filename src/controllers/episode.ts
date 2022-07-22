@@ -1,11 +1,10 @@
-import { attr, api, get, parse } from '../api'
+import { attr, api, parser } from '../api'
 import { Controller } from '../types'
 
 export const getEpisode: Controller = async (req, res) => {
   try {
     const { id } = req.params
-    const { data } = await get(api.episode(id))
-    const html = parse(data)
+    const html = await parser(api.episode(id))
     const ctrls = html.querySelectorAll('.controldiv2 a')
     let nav = {}
     let mapc = ctrls.map((e, i) => {

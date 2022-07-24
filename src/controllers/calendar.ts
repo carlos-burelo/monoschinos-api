@@ -1,15 +1,15 @@
 import { attr, api, parser } from '../api.js'
 import type { Controller } from '../types.d.js'
 
-export const getCalendar: Controller = async (req, res) => {
+export const getCalendar: Controller = async (_, res) => {
   try {
     const html = await parser(api.calendar)
     res.status(200).json(
-      html.querySelectorAll('.heromain [data-dia]').map(i => {
-        const day = i.getAttribute('data-dia')
+      html.querySelectorAll('.heromain .accordionItem').map(i => {
+        const day = i.querySelector('h1')?.text
         return {
           day,
-          animes: i.querySelectorAll('.col-md-6.col-lg-4.col-sm-12.for768').map(i => {
+          animes: i.querySelectorAll('.accordionItemContent .row .col-md-6').map(i => {
             const no = i.querySelector('.serisdtls a h4')?.text.trim()
             const tags = i.querySelectorAll('.serisdtls .seriesbtns a')
             return {

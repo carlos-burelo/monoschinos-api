@@ -10,7 +10,7 @@ export const getLatest: Controller = async (_, res) => {
         return {
           id: id || null,
           title: i.querySelector('.animetitles')?.text || null,
-          image: attr(i, 'img.animeimghv', 'src') || null,
+          image: attr(i, 'img.animeimghv', 'data-src') || null,
           type: i.querySelector('.positioning button')?.text.trim() || null,
           no: parseInt(i.querySelector('.positioning p')?.text.trim() || '0') || null,
         }
